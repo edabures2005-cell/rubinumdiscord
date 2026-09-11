@@ -4,14 +4,14 @@ This checks the public Rubinum forum API every 5 minutes and posts new forum pos
 
 ## Setup
 
-1. Create a GitHub repository. A private repository is fine.
-2. Upload `scraper.py`, `state.json`, and `.github/workflows/rubinum.yml`.
+1. Create a GitHub repository.
+2. Upload upload all the files if you want item shop and event updates
 3. In the repository go to:
    Settings → Secrets and variables → Actions → New repository secret
 4. Name the secret:
    `DISCORD_WEBHOOK_URL`
 5. Paste your NEW Discord webhook URL as the value.
-6. Go to Actions → "Rubinum News → Discord" → Run workflow once.
+6. Go to Actions → Run workflow once. for both scripts
 7. The first run creates a baseline and does not post the existing backlog.
 8. After that, the scheduled workflow checks every 5 minutes.
 
