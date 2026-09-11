@@ -1,4 +1,4 @@
-# Rubinum → Discord (free GitHub Actions bot)
+# Rubinum → Discord
 
 This checks the public Rubinum forum API every 5 minutes and posts new forum posts to a Discord webhook.
 
