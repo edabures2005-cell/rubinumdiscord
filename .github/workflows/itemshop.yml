@@ -31,7 +31,7 @@ jobs:
 
       - name: Save state
         run: |
-          if git diff --quiet -- itemshop_state.json; then
+          if [ -z "$(git status --porcelain -- itemshop_state.json)" ]; then
             echo "No state change."
             exit 0
           fi
