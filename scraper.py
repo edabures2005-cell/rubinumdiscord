@@ -69,7 +69,7 @@ def main():
 
     # First run: establish a baseline and do NOT spam the Discord channel
     # with the existing backlog.
-    if last_id is None:
+    if last_id is None or last_id <= 0:
         save_state(int(posts[-1]["id"]))
         print(f"Initial baseline set to post #{posts[-1]['id']}.")
         return
