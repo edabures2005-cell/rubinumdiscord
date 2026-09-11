@@ -1,0 +1,42 @@
+name: Rubinum News → Discord
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  check-rubinum:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install dependency
+        run: pip install requests
+
+      - name: Check Rubinum and send new posts
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: python scraper.py
+
+      - name: Save state
+        run: |
+          if git diff --quiet -- state.json; then
+            echo "No state change."
+            exit 0
+          fi
+          git config user.name "rubinum-news-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add state.json
+          git commit -m "Update Rubinum news state"
+          git push
