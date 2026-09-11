@@ -1,0 +1,44 @@
+name: Rubinum Item Shop → Discord
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  check-itemshop:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install dependency
+        run: pip install requests
+
+      - name: Check Item Shop and send new posts
+        env:
+          DISCORD_ITEMSHOP_WEBHOOK_URL: ${{ secrets.DISCORD_ITEMSHOP_WEBHOOK_URL }}
+        run: python itemshop.py
+
+      - name: Save state
+        run: |
+          if git diff --quiet -- itemshop_state.json; then
+            echo "No state change."
+            exit 0
+          fi
+
+          git config user.name "rubinum-itemshop-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add itemshop_state.json
+          git commit -m "Update Item Shop state"
+          git push
